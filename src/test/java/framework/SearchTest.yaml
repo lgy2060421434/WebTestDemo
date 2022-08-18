@@ -1,0 +1,12 @@
+name: search
+#before_all: []
+#after_all: []
+steps:
+  - chrome:
+  - get: http://ceshiren.com
+  - find: [id, search-button]
+  - click:
+  - find: [id, search-term]
+  - sendeks: 定向班5期
+  - assert:
+#  - find: [id, search-term]
