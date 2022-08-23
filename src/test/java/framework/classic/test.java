@@ -1,4 +1,4 @@
-package framework;
+package framework.classic;
 
 import java.util.Locale;
 

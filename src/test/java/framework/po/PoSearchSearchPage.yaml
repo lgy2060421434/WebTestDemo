@@ -1,0 +1,5 @@
+name: SearchPage
+methods:
+  get_first_title:
+    - find: [id, search-button]
+    - getText: title

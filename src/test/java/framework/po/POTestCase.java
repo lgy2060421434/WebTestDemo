@@ -1,9 +1,9 @@
-package framework;
+package framework.po;
 
 import java.util.HashMap;
 import java.util.List;
-
-public class TestCase {
+//PoSearchTest.yaml文件得加载对象
+public class POTestCase {
     private String name;
     private List<HashMap<String, Object>> steps;
 //    private List<HashMap<String,Object>> after_all;

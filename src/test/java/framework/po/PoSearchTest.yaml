@@ -1,0 +1,13 @@
+name: search
+#before_all: []
+#after_all: []
+steps:
+  - main_page.new: PoSearchMainPage
+  - main_page.init:
+  - main_page.search: [ 定向班5期 ]
+  - search_page.new: PoSearchSearchPage
+  - search_page.get_first_title:
+  - assertThat: [ title, contains: [ 定向班5期 ] ]
+#  - main_page.toMemberAdd: []
+#  - return: contact_page
+#  - po: [wework, login, user, pass, other ]

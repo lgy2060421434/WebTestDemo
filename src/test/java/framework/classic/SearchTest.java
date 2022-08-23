@@ -1,4 +1,4 @@
-package framework;
+package framework.classic;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -13,6 +13,7 @@ import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 public class SearchTest {
+    //note:爱测平台搜索测试用例
     static WebDriver driver;
     @BeforeAll
     public static void beforAll(){

@@ -1,0 +1,10 @@
+name: MainPage
+methods:
+  init:
+    - chrome:
+    - get: http://ceshiren.com
+  search:
+    - find: [ id, search-button ]
+    - click:
+    - find: [ id, search-term ]
+    - sendeks: 定向班5期

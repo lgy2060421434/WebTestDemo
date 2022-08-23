@@ -1,4 +1,4 @@
-package framework;
+package framework.classic;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -46,7 +46,7 @@ public class CaseUtil {
                     }
                 }else if (action.equals("click")){
                     driver.findElement(by.get()).click();
-                }else if (action.equals("sendkeys")){
+                }else if (action.equals("sendeks")){
                     driver.findElement(by.get()).sendKeys((String)value);
                 }else if (action.equals("chrome")){
                     driver=new ChromeDriver();
