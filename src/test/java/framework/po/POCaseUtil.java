@@ -44,10 +44,10 @@ public class POCaseUtil {
                         POBasePage currentPage = null;
                         //note:如果是第一次初始化POBasePage对象就获取第一个yaml的值
                         if (lastPage.get() == null) {
-                            currentPage = (POBasePage.load(String.format("src/test/java/framework/po/%s.yaml", value), null));
+                            currentPage = (POBasePage.load((String)value, null) );
                             //note:已经被初始化过就走这一步
                         } else {
-                            currentPage = POBasePage.load(String.format("src/test/java/framework/po/%s.yaml", value), lastPage.get().driver);
+                            currentPage = POBasePage.load((String)value, lastPage.get().driver);
                         }
                         //note：放入一个POBasePage对象加载了yaml文件的数据的
                         lastPage.set(currentPage);

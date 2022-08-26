@@ -8,3 +8,5 @@ methods:
     - click:
     - find: [ id, search-term ]
     - sendeks: 定向班5期
+#    - find: [link-text, 选项]
+#    - click:

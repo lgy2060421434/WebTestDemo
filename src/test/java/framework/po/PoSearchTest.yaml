@@ -5,9 +5,14 @@ steps:
   - main_page.new: PoSearchMainPage
   - main_page.init:
   - main_page.search: [ 定向班5期 ]
-  - search_page.new: PoSearchSearchPage
-  - search_page.get_first_title:
+#  编程模式
+  - Search_page.new: framework.po.POCodeSearchPage
+  - Search_page.get_first_title:
   - assertThat: [ title, contains: [ 定向班5期 ] ]
+#  - search_page.new: PoSearchSearchPage
+#  - search_page.get_first_title:
+#  - assertThat: [ title, contains: [ 定向班5期 ] ]
+#  数据风格
 #  - main_page.toMemberAdd: []
 #  - return: contact_page
 #  - po: [wework, login, user, pass, other ]

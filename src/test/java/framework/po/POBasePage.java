@@ -1,5 +1,8 @@
 package framework.po;
 
+import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.core.exc.StreamReadException;
+import com.fasterxml.jackson.databind.DatabindException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import org.openqa.selenium.By;
@@ -8,6 +11,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -17,27 +21,60 @@ import java.util.concurrent.atomic.AtomicReference;
 public class POBasePage {
     //note:yaml里的名字：MainPage，或者SearchPage
     public String name;
-//    methods 存储一整个PoSearchTest.yaml文件数据
+    //    methods 存储一整个yaml文件数据
     public HashMap<String, List<HashMap<String, Object>>> methods;
     WebDriver driver;
     Integer retryTimes = 3;
 
     //note:从po的yaml文件读取数据，并生成一个BasePage的实例
-    public static POBasePage load(String name ,WebDriver driver) {
-        ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
+    public static POBasePage load(String name, WebDriver driver) {
         //note：每次调用都要清空一下对象的数据
         POBasePage page = null;
-        try {
-            page = mapper.readValue(new File(name), POBasePage.class);
-            page.driver=driver;
-        } catch (IOException e) {
-            e.printStackTrace();
+        String path = String.format("src/test/java/framework/po/%s.yaml",name);
+//        note：如果文件存在，则执行loadFromFile，不存在则执行loadFromClassLoader
+        if (new File(path).exists()) {
+            page = loadFromFile(path);
+        } else {
+            page = loadFromClassLoader(name);
         }
+        page.driver = driver;
         return page;
     }
 
+    public static POBasePage loadFromFile(String path) {
+//        yaml文件序列化，然后拿到文件数据
+        ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
+        try {
+            return mapper.readValue(new File(path), POBasePage.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    //note：反射执行测试类
+    public static POBasePage loadFromClassLoader(String classname) {
+        try {
+            return (POBasePage) Class.forName(classname).getDeclaredConstructor().newInstance();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 
     public void runPOMethod(String methodName) {
+        if (methods == null) {
+            try {
+                this.getClass().getMethod(methodName).invoke(this, null);
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            } catch (InvocationTargetException e) {
+                e.printStackTrace();
+            } catch (NoSuchMethodException e) {
+                e.printStackTrace();
+            }
+            return;
+        }
         AtomicReference<By> by = new AtomicReference<>();
         methods.get(methodName).forEach(step -> {
             step.entrySet().forEach(entry -> {
@@ -55,6 +92,8 @@ public class POBasePage {
                         by.set(By.cssSelector(Locator_value));
                     } else if (Locator_by.equals("xpath")) {
                         by.set(By.cssSelector(Locator_value));
+                    }else if (Locator_by.equals("link_text")){
+                        by.set(By.partialLinkText(Locator_value));
                     }
                 } else if (action.equals("click")) {
                     click(by.get());
